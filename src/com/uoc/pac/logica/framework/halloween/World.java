@@ -140,18 +140,29 @@ public void update(float deltaTime, float accelX) {
 }
 
 /*
- * 
+ * Actualizamos el estado de nuestro personaje principal. 
  */
 
 private void updateBob(float deltaTime, float accelX) {
+	//Comprobamos si se encuentra tocando el suelo. En caso afirmativo lo propulsamos.
     if (bob.state != Bob.BOB_STATE_HIT && bob.position.y <= 0.5f)
         bob.hitPlatform();
+    //Si no esta muerto, actualizamos la velocidad horizontal a partir del eje X del acelometro
     if (bob.state != Bob.BOB_STATE_HIT)
         bob.velocity.x = -accelX / 10 * Bob.BOB_MOVE_VELOCITY;
+    //Invocamos a la propia funcion de actualizar
     bob.update(deltaTime);
+    //Actualizamos la posicion más alta alcanzada.
     heightSoFar = Math.max(bob.position.y, heightSoFar);
 }
 
+/*
+ * Nos recorremos la lista de plataformas y las actualizamos mediante su propia
+ * funcion de update().
+ * Validamos si una plataforma esta en el estado pulverizar, en ese caso si el tiempo
+ * transcurrido es mayor al tiempo estimado de pulverizar eliminamos la plataforma de 
+ * la lista.
+ */
 private void updatePlatforms(float deltaTime) {
     int len = platforms.size();
     for (int i = 0; i < len; i++) {
@@ -165,6 +176,9 @@ private void updatePlatforms(float deltaTime) {
     }
 }
 
+/*
+ * Nos recorremos la lista de ardillas y las actualizamos mediante su propio metodo.
+ */
 private void updateSquirrels(float deltaTime) {
     int len = squirrels.size();
     for (int i = 0; i < len; i++) {
@@ -173,6 +187,9 @@ private void updateSquirrels(float deltaTime) {
     }
 }
 
+/*
+ * Nos recorremos la lista de calabazas y las actualizamos mediante su propio metodo.
+ */
 private void updateCoins(float deltaTime) {
     int len = coins.size();
     for (int i = 0; i < len; i++) {
@@ -189,18 +206,31 @@ private void updateCoins(float deltaTime) {
 	    checkCastleCollisions();
 	}
 	
+	/*
+	 * Nos permite controlar la colision de nuestro personaje con todas las
+	 * plataformas del juego.
+	 * 
+	 * Partimos de la premisa que el personaje esta por encima de la plataforma. 
+	 * Esto nos permite que el personaje pueda cruzar la plataforma por la parte inferior.
+	 */
 	private void checkPlatformCollisions() {
-	    if (bob.velocity.y > 0)
+	    
+		//Si estamos ascendiendo no controlamos las colisiones con las plataformas
+		if (bob.velocity.y > 0)
 	        return;
 	
 	    int len = platforms.size();
 	    for (int i = 0; i < len; i++) {
 	        Platform platform = platforms.get(i);
+	        //Comprobamos si el personaje esta por encima de la plataforma.
 	        if (bob.position.y > platform.position.y) {
+	        	//Comprobamos si hay colision
 	            if (OverlapTester
 	                    .overlapRectangles(bob.bounds, platform.bounds)) {
-	                bob.hitPlatform();
+	                //Actualizamos los estados.
+	            	bob.hitPlatform();
 	                listener.jump();
+	                //De forma aleatoria decidimos si la plataforma se destruira o no.
 	                if (rand.nextFloat() > 0.5f) {
 	                    platform.pulverize();
 	                }
@@ -210,38 +240,58 @@ private void updateCoins(float deltaTime) {
 	    }
 	}
 	
+	/*
+	 * Nos permite controlar la colision de nuestro personaje con todas las
+	 * ardillas del juego.
+	 */
 	private void checkSquirrelCollisions() {
 	    int len = squirrels.size();
 	    for (int i = 0; i < len; i++) {
 	        Squirrel squirrel = squirrels.get(i);
+	        //Validamos si existe colision
 	        if (OverlapTester.overlapRectangles(squirrel.bounds, bob.bounds)) {
+	        	//Actualizamos estados.
 	            bob.hitSquirrel();
 	            listener.hit();
 	        }
 	    }
 	}
 	
+	/*
+	 * Nos permite controlar las colisiones de nuestro personaje con todas los demas items
+	 * en este caso las calabazas y los prepulsores del juego.
+	 */
 	private void checkItemCollisions() {
 	    int len = coins.size();
 	    for (int i = 0; i < len; i++) {
 	        Coin coin = coins.get(i);
+	        //Comprobamos si hay colision
 	        if (OverlapTester.overlapRectangles(bob.bounds, coin.bounds)) {
+	        	//Eliminamos la calabaza recogida
 	            coins.remove(coin);
+	            //Actualizamos lista de calabazas
 	            len = coins.size();
+	            //reproducimos ruido.
 	            listener.coin();
+	            //actualizamos puntuacion actual.
 	            score += Coin.COIN_SCORE;
 	        }
 	
 	    }
-	
+	    
+	    //Si estamos ascendiendo no validamos la colision con los propulsores.
 	    if (bob.velocity.y > 0)
 	        return;
 	
+	    
 	    len = springs.size();
 	    for (int i = 0; i < len; i++) {
 	        Spring spring = springs.get(i);
+	        //Si el personaje esta por encima del propulsor
 	        if (bob.position.y > spring.position.y) {
+	        	//Si se produce una colision
 	            if (OverlapTester.overlapRectangles(bob.bounds, spring.bounds)) {
+	            	//actualizamos estados.
 	                bob.hitSpring();
 	                listener.highJump();
 	            }
@@ -249,12 +299,21 @@ private void updateCoins(float deltaTime) {
 	    }
 	}
 	
+	/*
+	 * Comprobamos si el personaje principal colisiona con la calabaza definitiva,
+	 * en caso afirmativo actualizamos el estado del mundo "Next Level". 
+	 */
 	private void checkCastleCollisions() {
 	    if (OverlapTester.overlapRectangles(castle.bounds, bob.bounds)) {
 	        state = WORLD_STATE_NEXT_LEVEL;
 	    }
 	}
 
+	/*
+	 * Comprobamos si el personaje principal esta por debajo de la altura maxima
+	 * alcanzada menos la mitad de la pantalla, en caso afirmativo se termina el 
+	 * juego "Game Over". 
+	 */
     private void checkGameOver() {
         if (heightSoFar - 7.5f > bob.position.y) {
             state = WORLD_STATE_GAME_OVER;
