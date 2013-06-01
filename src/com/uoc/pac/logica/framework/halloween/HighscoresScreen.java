@@ -13,12 +13,25 @@ import com.uoc.pac.logica.framework.math.OverlapTester;
 import com.uoc.pac.logica.framework.math.Rectangle;
 import com.uoc.pac.logica.framework.math.Vector2;
 
+/*
+ * En esta pantalla (estado) simplemente se representan las 5 puntuaciones
+ * más altas que se han obtenido. 
+ * Las puntuaciones son recojidas del fichero de configuración. 
+ * 
+ * Tarea: 
+ *  -> Incluir aquí el WS para obtener las puntuaciones
+ *  
+ *  Son represnetadas por pantalla mediante la clase Font.
+ */
 public class HighscoresScreen extends GLState {
     Camera2D guiCam;
     SpriteBatcher batcher;
     Rectangle backBounds;
     Vector2 touchPoint;
-    String[] highScores;  
+    String[] highScores; 
+    
+    // xOffset nos permitira calcular la presentacion de cada linea, 
+    // para que esten centradas horizontalmente.
     float xOffset = 0;
     
     public HighscoresScreen(Game game) {
@@ -28,11 +41,13 @@ public class HighscoresScreen extends GLState {
         backBounds = new Rectangle(0, 0, 64, 64);
         touchPoint = new Vector2();
         batcher = new SpriteBatcher(glGraphics, 100);
-        highScores = new String[5];        
+        highScores = new String[5]; 
+        //Lo hacemos a partir de la linea mas grande.
         for(int i = 0; i < 5; i++) {
             highScores[i] = (i + 1) + ". " + Settings.highscores[i];
             xOffset = Math.max(highScores[i].length() * Assets.font.glyphWidth, xOffset);
-        }        
+        }       
+        // "Assets.font.glyphWidth / 2" esto es necesario porque la clase Font utiliza el centro, en lugar de las esquinas.
         xOffset = 160 - xOffset / 2 + Assets.font.glyphWidth / 2;
     }    
 
@@ -46,6 +61,10 @@ public class HighscoresScreen extends GLState {
             touchPoint.set(event.x, event.y);
             guiCam.touchToWorld(touchPoint);
             
+            /*
+             * Verificamos si se ha pulsado la flecha de retorno
+             * y volvemos a la pantalla de menu principal.
+             */
             if(event.type == TouchEvent.TOUCH_UP) {
                 if(OverlapTester.pointInRectangle(backBounds, touchPoint)) {
                     Assets.playSound(Assets.clickSound);
@@ -56,6 +75,12 @@ public class HighscoresScreen extends GLState {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.uoc.pac.logica.framework.State#present(float)
+     * 
+     * Presentamos las puntuaciones por pantalla.
+     */
     @Override
     public void present(float deltaTime) {
         GL10 gl = glGraphics.getGL();        

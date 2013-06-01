@@ -4,17 +4,24 @@ import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.net.Uri;
-import android.widget.VideoView;
-
 import com.uoc.pac.logica.framework.Game;
 import com.uoc.pac.logica.framework.Input.TouchEvent;
 import com.uoc.pac.logica.framework.gl.Camera2D;
 import com.uoc.pac.logica.framework.gl.SpriteBatcher;
 import com.uoc.pac.logica.framework.impl.GLState;
-import com.uoc.pac.logica.framework.math.OverlapTester;
 import com.uoc.pac.logica.framework.math.Rectangle;
 import com.uoc.pac.logica.framework.math.Vector2;
+
+/*
+ * Esta es la clase que represneta la pantalla devuelta por getStartScreen().
+ * En esta pantalla se visualiza simplemente el logotipo de la UOC
+ * 
+ * Actualmente hay que puslar para proceder al siguiente estado.
+ * 
+ * Cambios a realizar:
+ * 	-> Visualización de un video
+ *  -> Cambio de estado al finalizar el video o en X segundos.
+ */
 
 public class VideoPresentationScreen extends GLState {
     Camera2D guiCam;
@@ -42,6 +49,7 @@ public class VideoPresentationScreen extends GLState {
             TouchEvent event = touchEvents.get(i);                        
             if(event.type == TouchEvent.TOUCH_UP) {
                 touchPoint.set(event.x, event.y);
+                //procedemos a la siguiente pantalla (estado) Menu principal
                 game.setScreen(new MainMenuScreen(game));
                 return;
             }

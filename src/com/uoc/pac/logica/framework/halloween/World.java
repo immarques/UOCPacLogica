@@ -7,7 +7,16 @@ import java.util.Random;
 import com.uoc.pac.logica.framework.math.OverlapTester;
 import com.uoc.pac.logica.framework.math.Vector2;
 
+/*
+ * En esta clase se define todo el mundo y se inicializan los diferentes objetos, se controlan
+ * las colisiones y los diferentes elementos.
+ */
 public class World {
+	
+	/*
+	 * Definimos una interfaz que nos permitira tener más limpio el codigo referente a la 
+	 * reproduccion de sonidos.
+	 */
     public interface WorldListener {
         public void jump();
 
@@ -18,13 +27,18 @@ public class World {
         public void coin();
     }
 
+    //Definimos el tamaño del mundo, se ha decidido representar el mundo en 10 metros de amplio
+    //300 metros de alto.
     public static final float WORLD_WIDTH = 10;
     public static final float WORLD_HEIGHT = 15 * 20;
+    //El mundo puede encotrarse en uno de estos tres estados.
     public static final int WORLD_STATE_RUNNING = 0;
     public static final int WORLD_STATE_NEXT_LEVEL = 1;
     public static final int WORLD_STATE_GAME_OVER = 2;
+    //Definimos la gravedad que interviene en el mundo.
     public static final Vector2 gravity = new Vector2(0, -12);
 
+    //Definimos todos los objetos que intervendran en nuestro mundo.
     public final Bob bob;
     public final List<Platform> platforms;
     public final List<Spring> springs;
@@ -34,11 +48,15 @@ public class World {
     public final WorldListener listener;
     public final Random rand;
 
+    //Variable que nos permite acumular la altura del mundo que se ha alcanzado
     public float heightSoFar;
+    //Nos permite ir acumulando la puntuancion
     public int score;
+    //Nos indica el estado en el que nos encontramos.
     public int state;
 
     public World(WorldListener listener) {
+    	//Inicializamos todos los objetos que intervendran en nuestro mundo.
         this.bob = new Bob(5, 1);
         this.platforms = new ArrayList<Platform>();
         this.springs = new ArrayList<Spring>();
@@ -53,7 +71,12 @@ public class World {
         this.state = WORLD_STATE_RUNNING;
     }
 
+    /*
+     * Generamos un nivel al azar.
+     */
 	private void generateLevel() {
+		
+		//Definimos el numero de plataformas, su ubicacion y su tipo al azar. Mientras no supere los limites del mundo.
 	    float y = Platform.PLATFORM_HEIGHT / 2;
 	    float maxJumpHeight = Bob.BOB_JUMP_VELOCITY * Bob.BOB_JUMP_VELOCITY
 	            / (2 * -gravity.y);
@@ -67,6 +90,7 @@ public class World {
 	        Platform platform = new Platform(type, x, y);
 	        platforms.add(platform);
 	
+	        //Ponemos al azar sobre las plataformas estaticas un propulsor.
 	        if (rand.nextFloat() > 0.9f
 	                && type != Platform.PLATFORM_TYPE_MOVING) {
 	            Spring spring = new Spring(platform.position.x,
@@ -75,6 +99,8 @@ public class World {
 	            springs.add(spring);
 	        }
 	
+	        //Colocamos ardillas voladoras, que pueden matar al personaje principal de forma aleatoria, pero a partir de un 
+	        //avance del mundo.
 	        if (y > WORLD_HEIGHT / 3 && rand.nextFloat() > 0.8f) {
 	            Squirrel squirrel = new Squirrel(platform.position.x
 	                    + rand.nextFloat(), platform.position.y
@@ -82,6 +108,7 @@ public class World {
 	            squirrels.add(squirrel);
 	        }
 	
+	        //Colocamos de forma aleatoria diferentes calabazas sobre el mundo.
 	        if (rand.nextFloat() > 0.6f) {
 	            Coin coin = new Coin(platform.position.x + rand.nextFloat(),
 	                    platform.position.y + Coin.COIN_HEIGHT
@@ -92,15 +119,21 @@ public class World {
 	        y += (maxJumpHeight - 0.5f);
 	        y -= rand.nextFloat() * (maxJumpHeight / 3);
 	    }
-	
+	    
+	    //Definimos el castillo en la ultima posicion de y.
 	    castle = new Castle(WORLD_WIDTH / 2, y);
 	}
 
+	/*
+	 * Este metodo nos permite ir actualizando el juego. Actualizamos los diferentes objetos, verificamos las colisiones
+	 * y si la partida a llegado a su fin.
+	 */
 public void update(float deltaTime, float accelX) {
     updateBob(deltaTime, accelX);
     updatePlatforms(deltaTime);
     updateSquirrels(deltaTime);
     updateCoins(deltaTime);
+    //Si el personaje no esta en el estado golpeado, se validan las colisiones.
     if (bob.state != Bob.BOB_STATE_HIT)
         checkCollisions();
     checkGameOver();
@@ -144,6 +177,7 @@ private void updateCoins(float deltaTime) {
     }
 }
 
+//Validamos todas las colisiones posibles.
 	private void checkCollisions() {
 	    checkPlatformCollisions();
 	    checkSquirrelCollisions();

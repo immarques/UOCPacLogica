@@ -15,6 +15,14 @@ import com.uoc.pac.logica.framework.math.OverlapTester;
 import com.uoc.pac.logica.framework.math.Rectangle;
 import com.uoc.pac.logica.framework.math.Vector2;
 
+/*
+ * Tenemos 5 pantallas de ayuda iguales, en estas pantalas (estados)
+ * simplemente se carga una imagen, donde se desarrolla y explica un 
+ * paso del juego.
+ * 
+ * Solo se permite pasar a la siguiente pantalla y la ultima pantalla de
+ * ayuda te devuelve al menu principal.
+ */
 public class HelpScreen extends GLState {
     Camera2D guiCam;
     SpriteBatcher batcher;

@@ -1,11 +1,5 @@
 package com.uoc.pac.logica.framework.gl;
 
-/*
- * Esta clase contiene la textura que nos sirve de texto
- * el tama–o de cada uno de las letras y el array de letras entre el
- * codigo 32 y 127 del codigo ASCII.
- */
-
 public class Font {
     public final Texture texture;
     public final int glyphWidth;
@@ -30,10 +24,6 @@ public class Font {
         }        
     }
     
-    /*
-     * Esta funcion nos permite escribir el texto a partir del sprite
-     * una cadena de texto y las cordenadas donde se situara la primera letra.
-     */
     public void drawText(SpriteBatcher batcher, String text, float x, float y) {
         int len = text.length();
         for(int i = 0; i < len; i++) {
