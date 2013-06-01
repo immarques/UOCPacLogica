@@ -139,6 +139,10 @@ public void update(float deltaTime, float accelX) {
     checkGameOver();
 }
 
+/*
+ * 
+ */
+
 private void updateBob(float deltaTime, float accelX) {
     if (bob.state != Bob.BOB_STATE_HIT && bob.position.y <= 0.5f)
         bob.hitPlatform();
