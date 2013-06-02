@@ -11,6 +11,10 @@ import com.uoc.pac.logica.framework.FileIO;
 public class Settings {
 	//Esta variable nos permite saber si se reproducen o no los sonidos.
     public static boolean soundEnabled = true;
+    //Esta variable nos permite bloquear los limites de la pantalla.
+    public static boolean limitedScreen = false;
+    //Esta variable nos permite visualizar los delimitadores del mundo logico.
+    public static boolean viewDelimited = false;
     //Array de puntuaciones
     public final static int[] highscores = new int[] { 100, 80, 50, 30, 10 };
     public final static String file = ".halloween";
@@ -26,13 +30,15 @@ public class Settings {
         try {
             in = new BufferedReader(new InputStreamReader(files.readFile(file)));
             soundEnabled = Boolean.parseBoolean(in.readLine());
+            limitedScreen = Boolean.parseBoolean(in.readLine());
+            viewDelimited = Boolean.parseBoolean(in.readLine());
             for(int i = 0; i < 5; i++) {
                 highscores[i] = Integer.parseInt(in.readLine());
             }
         } catch (IOException e) {
-            // :( It's ok we have defaults
+            
         } catch (NumberFormatException e) {
-            // :/ It's ok, defaults save our day
+            
         } finally {
             try {
                 if (in != null)
@@ -51,6 +57,10 @@ public class Settings {
             out = new BufferedWriter(new OutputStreamWriter(
                     files.writeFile(file)));
             out.write(Boolean.toString(soundEnabled));
+            out.write("\n");
+            out.write(Boolean.toString(limitedScreen));
+            out.write("\n");
+            out.write(Boolean.toString(viewDelimited));
             out.write("\n");
             for(int i = 0; i < 5; i++) {
                 out.write(Integer.toString(highscores[i]));

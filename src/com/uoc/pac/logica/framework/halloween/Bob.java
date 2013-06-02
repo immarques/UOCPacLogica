@@ -58,12 +58,21 @@ public class Bob extends DynamicGameObject{
          * A diferencia de otros objetos con el objeto que representa al personaje
          * principal le permitimos cruzar los bordes de la pantalla, apareciendo por
          * el otro extremo.
+         * 
+         * Según las opciones elegidas podra o no cruzar los limites de la pantalla.
          */
-        if(position.x < 0)
-            position.x = World.WORLD_WIDTH;
-        if(position.x > World.WORLD_WIDTH)
-            position.x = 0;
-        
+        if(!Settings.limitedScreen){
+        	if(position.x < 0)
+        		position.x = World.WORLD_WIDTH;
+        	if(position.x > World.WORLD_WIDTH)
+        		position.x = 0;
+        }else{
+        	if(position.x < 0)
+        		position.x = 0;
+        	if(position.x > World.WORLD_WIDTH)
+        		position.x = World.WORLD_WIDTH;
+        	
+        }
         //Actualizamos el ciclo de vida
         stateTime += deltaTime;
     }

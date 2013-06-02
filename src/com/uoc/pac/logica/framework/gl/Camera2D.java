@@ -8,7 +8,7 @@ import com.uoc.pac.logica.framework.math.Vector2;
 /*
  * Dado que la cámara se configura de una manera para que trabajemos en 
  * nuestra resolución de destino, esta transformación se reduce simplemente 
- * a voltear la pantalla coordenada y en un 320 x 480 píxeles.
+ * en transformar la pantalla (nuestas coordenadas)en un 320 x 480 píxeles.
  */
 
 public class Camera2D {
