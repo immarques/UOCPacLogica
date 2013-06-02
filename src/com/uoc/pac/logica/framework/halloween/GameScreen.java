@@ -45,6 +45,8 @@ public class GameScreen extends GLState {
     Rectangle pauseBounds;
     Rectangle resumeBounds;
     Rectangle quitBounds;
+    Rectangle moveLeftBounds;
+    Rectangle moveRightBounds;
     int lastScore;
     String scoreString;    
     FPSCounter fpsCounter;
@@ -89,6 +91,8 @@ public class GameScreen extends GLState {
         pauseBounds = new Rectangle(320- 64, 480- 64, 64, 64);
         resumeBounds = new Rectangle(160 - 96, 240, 192, 36);
         quitBounds = new Rectangle(160 - 96, 240 - 36, 192, 36);
+        moveLeftBounds = new Rectangle(0, 0, 64, 64);
+        moveRightBounds = new Rectangle(320 - 64, 0, 64, 64);
         lastScore = 0;
         scoreString = "puntos: 0";
         //Nos permite controlar la velocidad del juego
@@ -163,7 +167,15 @@ public class GameScreen extends GLState {
 	            Assets.playSound(Assets.clickSound);
 	            state = GAME_PAUSED;
 	            return;
-	        }            
+	        }
+	        if(OverlapTester.pointInRectangle(moveRightBounds, touchPoint)) {
+	        	 world.bob.velocity.x = 10 / 10 * Bob.BOB_MOVE_VELOCITY;
+	        	 world.bob.update(deltaTime);
+	        }
+	        if(OverlapTester.pointInRectangle(moveLeftBounds, touchPoint)) {
+	        	world.bob.velocity.x = -10 / 10 * Bob.BOB_MOVE_VELOCITY;
+	        	world.bob.update(deltaTime);
+	        }
 	    }
 	    
 	    //Actualizamos la puntuacion actual
@@ -310,6 +322,8 @@ public class GameScreen extends GLState {
 	    batcher.drawSprite(320 - 32, 480 - 32, 64, 64, Assets.pause);
 	    Assets.font.drawText(batcher, "RedBaron", 16, 480-20);
 	    Assets.font.drawText(batcher, scoreString, 16, 480-40);
+	    batcher.drawSprite(32, 32, 64, 64, Assets.arrow);
+	    batcher.drawSprite(320 - 32, 32, -64, 64, Assets.arrow);
 	}
 	
 	//Presentamos el menu de pausa y la puntuacion obtenida.
