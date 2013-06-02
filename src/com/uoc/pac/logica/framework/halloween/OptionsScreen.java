@@ -4,14 +4,10 @@ import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.renderscript.Font;
-
 import com.uoc.pac.logica.framework.Game;
 import com.uoc.pac.logica.framework.Input.TouchEvent;
 import com.uoc.pac.logica.framework.gl.Camera2D;
 import com.uoc.pac.logica.framework.gl.SpriteBatcher;
-import com.uoc.pac.logica.framework.gl.Texture;
-import com.uoc.pac.logica.framework.gl.TextureRegion;
 import com.uoc.pac.logica.framework.impl.GLState;
 import com.uoc.pac.logica.framework.math.OverlapTester;
 import com.uoc.pac.logica.framework.math.Rectangle;
@@ -27,6 +23,7 @@ public class OptionsScreen extends GLState {
     Rectangle soundBounds;
     Rectangle limitedMapBounds;
     Rectangle delimitedBounds;
+    Rectangle inmortalBounds;
     Rectangle backBounds;
     
     Vector2 touchPoint;   
@@ -37,8 +34,9 @@ public class OptionsScreen extends GLState {
         guiCam = new Camera2D(glGraphics, 320, 480);
         soundBounds = new Rectangle(320 - 64, 0, 64, 64);
         backBounds = new Rectangle(0, 0, 64, 64);
-        limitedMapBounds = new Rectangle(30, 140, 300, 36);
-        delimitedBounds = new Rectangle(30, 182, 300, 36);
+        limitedMapBounds = new Rectangle(30 -10, 140 -5, 300, 36);
+        delimitedBounds = new Rectangle(30 -10, 182 -5, 300, 36);
+        inmortalBounds = new Rectangle(30 -10, 222 -5, 300, 36);
         touchPoint = new Vector2();
         batcher = new SpriteBatcher(glGraphics, 100);
     }
@@ -78,6 +76,11 @@ public class OptionsScreen extends GLState {
                     Settings.viewDelimited = !Settings.viewDelimited;
                     return;
                 }
+                if(OverlapTester.pointInRectangle(inmortalBounds, touchPoint)) {
+                    Assets.playSound(Assets.clickSound);
+                    Settings.inmortal = !Settings.inmortal;
+                    return;
+                }
             }
         }
     }
@@ -104,6 +107,7 @@ public class OptionsScreen extends GLState {
         batcher.drawSprite(160, 480 - 10 - 71, 274, 142, Assets.logo);
         Assets.font.drawText(batcher, Settings.limitedScreen?"Limitar borde: ON":"limitar borde: OFF", 30, 140);
         Assets.font.drawText(batcher, Settings.viewDelimited?"Limitadores: ON":"Limitadores: OFF", 30, 182);
+        Assets.font.drawText(batcher, Settings.inmortal?"Inmortal: ON":"Inmortal: OFF", 30, 222);
         batcher.drawSprite(32, 32, 64, 64, Assets.arrow);
         batcher.drawSprite(288, 32, 64, 64, Settings.soundEnabled?Assets.soundOn:Assets.soundOff);
                 

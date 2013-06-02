@@ -13,7 +13,7 @@ public class Halloween extends GLGame {
     //Derivamos a la clase que representa la primera pantalla
     public State getStartScreen() {
         //return new VideoPresentationScreen(this);
-        return new OptionsScreen(this);
+        return new VideoPresentationScreen(this);
     }
     
     @Override

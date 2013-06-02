@@ -27,6 +27,7 @@ public class Assets {
     public static TextureRegion pauseMenu;
     public static TextureRegion ready;
     public static TextureRegion gameOver;
+    public static TextureRegion options;
     public static TextureRegion highScoresRegion;
     public static TextureRegion logo;
     public static TextureRegion soundOn;
@@ -73,6 +74,7 @@ public class Assets {
         pauseMenu = new TextureRegion(items, 224, 128, 192, 96);
         ready = new TextureRegion(items, 320, 224, 192, 32);
         gameOver = new TextureRegion(items, 352, 256, 160, 96);
+        options = new TextureRegion(items, 321, 352, 191, 36);
         highScoresRegion = new TextureRegion(Assets.items, 0, 257, 300, 110 / 3);
         logo = new TextureRegion(items, 0, 352, 274, 142);
         soundOff = new TextureRegion(items, 0, 0, 64, 64);

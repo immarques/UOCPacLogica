@@ -31,6 +31,7 @@ public class MainMenuScreen extends GLState {
     SpriteBatcher batcher;
     Rectangle soundBounds;
     Rectangle playBounds;
+    Rectangle optionsBounds;
     Rectangle highscoresBounds;
     Rectangle helpBounds;
     Vector2 touchPoint;
@@ -46,6 +47,7 @@ public class MainMenuScreen extends GLState {
          */
         soundBounds = new Rectangle(0, 0, 64, 64);
         playBounds = new Rectangle(160 - 150, 200 + 18, 300, 36);
+        optionsBounds = new Rectangle(160 - 150, 130 - 30, 191, 36);
         highscoresBounds = new Rectangle(160 - 150, 200 - 18, 300, 36);
         helpBounds = new Rectangle(160 - 150, 200 - 18 - 36, 300, 36);
         
@@ -91,6 +93,11 @@ public class MainMenuScreen extends GLState {
                 if(OverlapTester.pointInRectangle(helpBounds, touchPoint)) {
                     Assets.playSound(Assets.clickSound);
                     game.setScreen(new HelpScreen(game));
+                    return;
+                }
+                if(OverlapTester.pointInRectangle(optionsBounds, touchPoint)) {
+                    Assets.playSound(Assets.clickSound);
+                    game.setScreen(new OptionsScreen(game));
                     return;
                 }
                 /*
@@ -140,6 +147,7 @@ public class MainMenuScreen extends GLState {
 
         batcher.drawSprite(160, 480 - 10 - 71, 274, 142, Assets.logo);
         batcher.drawSprite(160, 200, 300, 110, Assets.mainMenu);
+        batcher.drawSprite(160, 130, 191, 36, Assets.options);
         batcher.drawSprite(32, 32, 64, 64, Settings.soundEnabled?Assets.soundOn:Assets.soundOff);
                 
         batcher.endBatch();

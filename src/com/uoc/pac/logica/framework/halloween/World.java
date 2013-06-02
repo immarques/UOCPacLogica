@@ -249,10 +249,12 @@ private void updateCoins(float deltaTime) {
 	    for (int i = 0; i < len; i++) {
 	        Squirrel squirrel = squirrels.get(i);
 	        //Validamos si existe colision
-	        if (OverlapTester.overlapRectangles(squirrel.bounds, bob.bounds)) {
-	        	//Actualizamos estados.
-	            bob.hitSquirrel();
-	            listener.hit();
+	        if(!Settings.inmortal){
+	        	if (OverlapTester.overlapRectangles(squirrel.bounds, bob.bounds)) {
+	        		//Actualizamos estados.
+	            	bob.hitSquirrel();
+	            	listener.hit();
+	        	}
 	        }
 	    }
 	}

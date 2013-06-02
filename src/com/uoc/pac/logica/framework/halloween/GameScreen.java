@@ -90,7 +90,7 @@ public class GameScreen extends GLState {
         resumeBounds = new Rectangle(160 - 96, 240, 192, 36);
         quitBounds = new Rectangle(160 - 96, 240 - 36, 192, 36);
         lastScore = 0;
-        scoreString = "score: 0";
+        scoreString = "puntos: 0";
         //Nos permite controlar la velocidad del juego
         fpsCounter = new FPSCounter();
     }
@@ -181,9 +181,9 @@ public class GameScreen extends GLState {
 	        state = GAME_OVER;
 	        //Si la puntuacion obtenida es mejor a las existintes lo indicamos
 	        if(lastScore >= Settings.highscores[4]) 
-	            scoreString = "new highscore: " + lastScore;
+	            scoreString = "nuevo record: " + lastScore;
 	        else
-	            scoreString = "score: " + lastScore;
+	            scoreString = "puntos: " + lastScore;
 	        //Actualizamos las puntuaciones y guardamos el fichero de propiedades.
 	        Settings.addScore(lastScore);
 	        Settings.save(game.getFileIO());
@@ -308,7 +308,8 @@ public class GameScreen extends GLState {
 	//Presentamos el boton de pausa y la puntuacion acumulada hasta el momento.
 	private void presentRunning() {
 	    batcher.drawSprite(320 - 32, 480 - 32, 64, 64, Assets.pause);
-	    Assets.font.drawText(batcher, scoreString, 16, 480-20);
+	    Assets.font.drawText(batcher, "RedBaron", 16, 480-20);
+	    Assets.font.drawText(batcher, scoreString, 16, 480-40);
 	}
 	
 	//Presentamos el menu de pausa y la puntuacion obtenida.
