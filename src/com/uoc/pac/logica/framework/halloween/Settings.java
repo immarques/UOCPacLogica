@@ -17,6 +17,8 @@ public class Settings {
     public static boolean viewDelimited = false;
     //Permite que seamos inmortales al golpear una ardilla
     public static boolean inmortal = false;
+    //Permite establecer dificultad, false = facil, true = dificil
+    public static boolean dificultad = false;
     //Array de puntuaciones
     public final static int[] highscores = new int[] { 100, 80, 50, 30, 10 };
     public final static String file = ".halloween";
@@ -35,6 +37,7 @@ public class Settings {
             limitedScreen = Boolean.parseBoolean(in.readLine());
             viewDelimited = Boolean.parseBoolean(in.readLine());
             inmortal = Boolean.parseBoolean(in.readLine());
+            dificultad = Boolean.parseBoolean(in.readLine());
             for(int i = 0; i < 5; i++) {
                 highscores[i] = Integer.parseInt(in.readLine());
             }
@@ -66,6 +69,8 @@ public class Settings {
             out.write(Boolean.toString(viewDelimited));
             out.write("\n");
             out.write(Boolean.toString(inmortal));
+            out.write("\n");
+            out.write(Boolean.toString(dificultad));
             out.write("\n");
             for(int i = 0; i < 5; i++) {
                 out.write(Integer.toString(highscores[i]));

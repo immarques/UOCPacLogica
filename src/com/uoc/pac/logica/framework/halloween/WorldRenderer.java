@@ -80,10 +80,12 @@ public class WorldRenderer {
         
         batcher.beginBatch(Assets.items);
         renderBob();
+        renderPredator();
         renderPlatforms();
         renderItems();
         renderSquirrels();
         renderCastle();
+        renderBats();
         batcher.endBatch();
         gl.glDisable(GL10.GL_BLEND);
     }
@@ -108,6 +110,33 @@ public class WorldRenderer {
         //Nos basamos en la velocidad en el eje X para determinar el lado hacia el que se mueve y asi representar la imagen correcta.
         float side = world.bob.velocity.x < 0? -1: 1;        
         batcher.drawSprite(world.bob.position.x, world.bob.position.y, side * 1, 1, keyFrame);        
+    }
+
+    /*
+     * Este metodo es el responsable de representar al cazador.
+     */
+    private void renderPredator() {
+        //Nos basamos en la velocidad en el eje X para determinar el lado hacia el que se mueve y asi representar la imagen correcta.
+        float side = world.bob.velocity.x < 0? -1: 1;        
+        batcher.drawSprite(world.predator.position.x, world.predator.position.y, side * 1, 1, Assets.predator);        
+    }
+    
+    /*
+     * Nos recorremos la lista de murcielagos definidos en nuestro mundo logico y las representamos
+     */
+    private void renderBats() {
+        int len = world.bats.size();
+        for(int i = 0; i < len; i++) {
+            Bird bat = world.bats.get(i);
+            
+            if(bat.getColor().equals("green")){
+            	TextureRegion keyFrame;
+            	keyFrame = Assets.bat.getKeyFrame(bat.stateTime, Animation.ANIMATION_NONLOOPING);       
+            	//Representamos el murcielago en cuestion                       
+            	batcher.drawSprite(bat.position.x, bat.position.y, 
+                               1, 1, keyFrame);   
+            }
+        }
     }
     
     /*

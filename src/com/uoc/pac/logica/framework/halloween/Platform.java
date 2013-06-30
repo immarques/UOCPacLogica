@@ -26,6 +26,9 @@ public class Platform extends DynamicGameObject {
     //Definimos la velocidad del movimiento.
     public static final float PLATFORM_VELOCITY = 2;
     
+    //El rango mediante el cual puede detectarse.
+    protected static int DetectionRange = 60;
+    
     int type;
     int state;
     float stateTime;

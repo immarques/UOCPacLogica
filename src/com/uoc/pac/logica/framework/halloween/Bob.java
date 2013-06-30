@@ -1,13 +1,11 @@
 package com.uoc.pac.logica.framework.halloween;
 
-import com.uoc.pac.logica.framework.DynamicGameObject;
-
 /*
  * Esta clase representa a nuestro personaje principal, debido que tiene que
  * moverse por toda la pantalla extiende de DynamicGameObject.
  */
 
-public class Bob extends DynamicGameObject{
+public class Bob extends Bird{
 	//Inicializamos los estados en los que puede encontrarse el objecto.
     public static final int BOB_STATE_JUMP = 0;
     public static final int BOB_STATE_FALL = 1;
@@ -30,7 +28,10 @@ public class Bob extends DynamicGameObject{
     public Bob(float x, float y) {
         super(x, y, BOB_WIDTH, BOB_HEIGHT);
         state = BOB_STATE_FALL;
-        stateTime = 0;        
+        stateTime = 0; 
+        color = "green";
+    	location.x = (int) x;
+    	location.y = (int) y;
     }
 
     public void update(float deltaTime) { 
@@ -38,6 +39,8 @@ public class Bob extends DynamicGameObject{
         velocity.add(World.gravity.x * deltaTime, World.gravity.y * deltaTime);
         position.add(velocity.x * deltaTime, velocity.y * deltaTime);
         bounds.lowerLeft.set(position).sub(bounds.width / 2, bounds.height / 2);
+        location.x = (int) position.x;
+        location.y = (int) position.y;
         
         //En los proximos 2 bloques controlamos los estados del personaje
         if(velocity.y > 0 && state != BOB_STATE_HIT) {

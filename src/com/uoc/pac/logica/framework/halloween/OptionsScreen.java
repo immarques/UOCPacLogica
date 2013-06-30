@@ -24,6 +24,7 @@ public class OptionsScreen extends GLState {
     Rectangle limitedMapBounds;
     Rectangle delimitedBounds;
     Rectangle inmortalBounds;
+    Rectangle dificultadBounds;
     Rectangle backBounds;
     
     Vector2 touchPoint;   
@@ -37,6 +38,7 @@ public class OptionsScreen extends GLState {
         limitedMapBounds = new Rectangle(30 -10, 140 -5, 300, 36);
         delimitedBounds = new Rectangle(30 -10, 182 -5, 300, 36);
         inmortalBounds = new Rectangle(30 -10, 222 -5, 300, 36);
+        dificultadBounds = new Rectangle(30 -10, 110 -5, 300, 36);
         touchPoint = new Vector2();
         batcher = new SpriteBatcher(glGraphics, 100);
     }
@@ -81,6 +83,11 @@ public class OptionsScreen extends GLState {
                     Settings.inmortal = !Settings.inmortal;
                     return;
                 }
+                if(OverlapTester.pointInRectangle(dificultadBounds, touchPoint)) {
+                    Assets.playSound(Assets.clickSound);
+                    Settings.dificultad = !Settings.dificultad;
+                    return;
+                }
             }
         }
     }
@@ -108,6 +115,7 @@ public class OptionsScreen extends GLState {
         Assets.font.drawText(batcher, Settings.limitedScreen?"Limitar borde: ON":"limitar borde: OFF", 30, 140);
         Assets.font.drawText(batcher, Settings.viewDelimited?"Limitadores: ON":"Limitadores: OFF", 30, 182);
         Assets.font.drawText(batcher, Settings.inmortal?"Inmortal: ON":"Inmortal: OFF", 30, 222);
+        Assets.font.drawText(batcher, Settings.dificultad?"Dificultad:DIFICIL":"DIFICULTAD:FACIL", 30, 110);
         batcher.drawSprite(32, 32, 64, 64, Assets.arrow);
         batcher.drawSprite(288, 32, 64, 64, Settings.soundEnabled?Assets.soundOn:Assets.soundOff);
                 

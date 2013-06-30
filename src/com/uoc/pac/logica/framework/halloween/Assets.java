@@ -35,6 +35,7 @@ public class Assets {
     public static TextureRegion arrow;
     public static TextureRegion pause;    
     public static TextureRegion spring;
+    public static TextureRegion predator;
     public static TextureRegion castle;
     public static Animation coinAnim;
     public static Animation bobJump;
@@ -42,6 +43,7 @@ public class Assets {
     public static TextureRegion bobHit;
     public static Animation squirrelFly;
     public static TextureRegion platform;
+    public static Animation bat;
     public static Animation brakingPlatform;    
     public static Font font;
     
@@ -92,6 +94,10 @@ public class Assets {
         bobJump = new Animation(0.2f,
                                 new TextureRegion(items, 0, 128, 32, 32),
                                 new TextureRegion(items, 32, 128, 32, 32));
+        bat = new Animation(0.2f, 
+        						new TextureRegion(items, 380, 470, 40, 40),
+        						new TextureRegion(items, 420, 470, 40, 40));
+        predator = new TextureRegion(items, 460, 470, 45, 45);
         bobFall = new Animation(0.2f,
                                 new TextureRegion(items, 64, 128, 32, 32),
                                 new TextureRegion(items, 96, 128, 32, 32));
